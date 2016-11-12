@@ -7,8 +7,8 @@ app.set('view engine', 'handlebars');
 
 app.use('/assets', express.static('assets'));
 
-app.get('/', function expressProcessReq(req, res) {
-  res.render('hello');
+app.get('/', function(req, res) {
+  res.render('home');
 });
 
 app.set('port', process.env.PORT || 5000);
