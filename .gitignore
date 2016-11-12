@@ -1,2 +1,7 @@
 node_modules
 .idea/
+npm-debug.log
+
+# Others
+.DS_Store
+Thumbs.db

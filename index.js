@@ -1,18 +1,10 @@
 'use strict';
 const express = require('express');
 const app = express();
-const exphbs = require('express-handlebars');
-app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
+require('./config/express')(app);
+require('./config/passport')(app);
+require('./routes')(app);
 
-app.use('/assets', express.static('assets'));
-
-app.get('/', function(req, res) {
-  res.render('hello');
+app.listen(app.get('port'), function appListener() {
+  console.log('Node app is running at localhost:' + app.get('port'));
 });
-
-app.set('port', (process.env.PORT || 5000));
-
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
-})
