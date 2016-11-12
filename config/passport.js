@@ -3,7 +3,7 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
 
-module.exports = function(app) {
+module.exports = function passportConfig(app) {
   passport.use(new FacebookStrategy(
     {
       clientID: process.env.FACEBOOK_APP_ID || 1586521245008399,

@@ -8,7 +8,7 @@ const exphbs = require('express-handlebars');
 // const cookieParser = require('cookie-parser');
 // const passport = require('passport');
 
-module.exports = function(app) {
+module.exports = function expressConfig(app) {
   app.set('view engine', 'handlebars');
   app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
   app.use(compression());
@@ -18,5 +18,5 @@ module.exports = function(app) {
   // app.use(cookieParser());
   // app.use(passport.initialize());
   app.use('/assets', express.static('assets'));
-  app.set('port', (process.env.PORT || 5000));
+  app.set('port', process.env.PORT || 5000);
 };
