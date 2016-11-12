@@ -1,3 +1,5 @@
 coverage/**
 /dist/**
 /unitTests/**
+/node_modules/**
+/assets/**
