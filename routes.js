@@ -1,10 +1,10 @@
 'use strict';
 const passport = require('passport');
 
-module.exports = function (app) {
+module.exports = function passportConfig(app) {
   app.use('/api/v1/story', require('./api/story'));
 
-  app.get('/', function(req, res) {
+  app.get('/', function expressRequestHandling(req, res) {
     res.render('home');
   });
   
