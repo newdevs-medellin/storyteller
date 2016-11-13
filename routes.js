@@ -17,9 +17,12 @@ module.exports = function passportConfig(app) {
     passport.authenticate('facebook'));
 
   app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    passport.authenticate('facebook', { failureRedirect: '/auth/failed' }),
     function succesAuth(req, res) {
-      // Successful authentication, redirect home.
       res.redirect('/');
     });
+  
+  app.get('/auth/failed', function expressRequestHandling(req, res) {
+    res.render('home');
+  });
 };
