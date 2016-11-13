@@ -18,7 +18,6 @@
     "gulp-sass": "^2.3.2"
   },
   "dependencies": {
-    "apiai": "^3.0.2",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "express": "^4.13.3",
