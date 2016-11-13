@@ -1,4 +1,6 @@
 'use strict';
+const ai = require('apiai');
+const agent = ai("9f37a89a1b504474b2704c16498a4c60");
 const storyModel = require('./story.model');
 
 const handleError = function handleError(err, res) {
@@ -6,10 +8,29 @@ const handleError = function handleError(err, res) {
 };
 
 exports.post = function (req, res) {
-  storyModel.create(req.body, function (err, data) {
-    if (err) return handleError(err, res);
-    return res.status(200).json({data: data});
+  let data = req.body;
+  data.nouns = [];
+  // Process sentence
+  let nlp = agent.textRequest(data.sentence);
+  nlp.on('response', function(res) {
+    // Character is defined in first sentence
+    if(res.result.action === 'p1'){
+      // Main Character
+      let character = res.result.parameters.character;
+      data.nouns.push({'character': character});
+    }
+
+    storyModel.create(data, function (err, data) {
+      if (err) return handleError(err, res);
+      return res.status(200).json({data: data});
+    });
+
   });
+  nlp.on('error', function(error) {
+    console.log(error);
+    return res.status(500).json({error: error});
+  });
+  nlp.end();
 };
 
 exports.getById = function (req, res) {
