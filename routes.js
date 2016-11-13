@@ -7,11 +7,15 @@ module.exports = function passportConfig(app) {
   app.get('/', function expressRequestHandling(req, res) {
     res.render('home');
   });
-  
+
+  app.get('/start', function expressRequestHandling(req, res) {
+    res.render('start');
+  });
+
   /* if you need to move the following endpoints feel free to do it!!! */
   app.get('/auth/facebook',
     passport.authenticate('facebook'));
-  
+
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function succesAuth(req, res) {

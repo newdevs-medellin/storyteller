@@ -12,11 +12,11 @@ exports.post = function (req, res) {
   data.nouns = [];
   // Process sentence
   let nlp = agent.textRequest(data.sentence);
-  nlp.on('response', function(res) {
+  nlp.on('response', function(response) {
     // Character is defined in first sentence
-    if(res.result.action === 'p1'){
+    if(response.result.action === 'p1'){
       // Main Character
-      let character = res.result.parameters.character;
+      let character = response.result.parameters.character;
       data.nouns.push({'character': character});
     }
 
