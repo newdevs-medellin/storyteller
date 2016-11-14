@@ -1,36 +1,28 @@
 'use strict';
-const ai = require('apiai');
-const agent = ai("9f37a89a1b504474b2704c16498a4c60");
 const storyModel = require('./story.model');
+const request = require('request');
+const Q = require('q');
 
 const handleError = function handleError(err, res) {
   return res.status(400).json({error: err});
 };
 
 exports.post = function (req, res) {
-  let data = req.body;
-  data.nouns = [];
-  // Process sentence
-  let nlp = agent.textRequest(data.sentence);
-  nlp.on('response', function(response) {
-    // Character is defined in first sentence
-    if(response.result.action === 'p1'){
-      // Main Character
-      let character = response.result.parameters.character;
-      data.nouns.push({'character': character});
-    }
-
-    storyModel.create(data, function (err, data) {
-      if (err) return handleError(err, res);
-      return res.status(200).json({data: data});
+  Promise.all(req.body.sentence.split(' ').map(function (word) {
+    return getGif(word).then(function (value) {
+      return {noun: word, imgUrl: value};
     });
-
+  })).then(function (result) {
+    req.body.nouns = result;
+    storyModel.create(req.body, function (err, data) {
+      if (err) return handleError(err, res);
+      console.log('req.body', req.body);
+      return res.status(200).json({data: data});
+     });
+  }, function (reason) {
+    console.log('reason', reason);
+    return reason;
   });
-  nlp.on('error', function(error) {
-    console.log(error);
-    return res.status(500).json({error: error});
-  });
-  nlp.end();
 };
 
 exports.getById = function (req, res) {
@@ -45,4 +37,17 @@ exports.get = function (req, res) {
     if (err) return handleError(err, res);
     return res.status(200).json({data: stories});
   });
+};
+
+function getGif (word) {
+  let deferred = Q.defer();
+  request.get(`http://api.giphy.com/v1/gifs/search?q=${word}&limit=1&api_key=dc6zaTOxFJmzC`, function (error, response, body) {
+    let bodyObj = JSON.parse(body);
+    if(bodyObj.data.length) {
+      deferred.resolve(bodyObj.data[0].embed_url);
+    }else{
+      deferred.resolve('');
+    }
+  });
+  return deferred.promise;
 };
