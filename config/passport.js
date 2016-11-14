@@ -13,7 +13,6 @@ module.exports = function passportConfig(app) {
       profileFields: ['id', 'displayName', 'email']
     },
     function getAccessToken (accessToken, refreshToken, profile, cb) {
-      //console.log('profile',profile);
       let story = {
         userId: profile.id,
         displayName: profile.displayName
