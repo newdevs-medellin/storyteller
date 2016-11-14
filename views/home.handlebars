@@ -1,3 +1,7 @@
 {{> header }}
 
+{{#if title}}
+    User: <div class="alert alert-danger" role="alert">{{ loginFailedMessage }}</div>
+{{/if}}
+
 {{> footer}}

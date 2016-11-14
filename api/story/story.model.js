@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const storySchema = new Schema({
   userId: String,
-  messageId: String,
+  displayName: String,
   sentence: String,
   nouns: Array
 });
