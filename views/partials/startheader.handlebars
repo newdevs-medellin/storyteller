@@ -19,14 +19,13 @@
 
         <div class="banner-info">
 
-        <div class="logo">
-            <h1><a href="index.html">STORYTELLER</a></h1>
+            <div class="logo">
+                <h1><a href="index.html">{{ story.displayName }}'s story</a></h1>
+            </div>
+            <h5>Tell your stories with gifs<img src="/assets/img/partyparrot.gif" alt="" /></h5>
         </div>
-        <h5>Tell your stories with gifs<img src="/assets/img/partyparrot.gif" alt="" /></h5>
-
-        <a type="button" href="/auth/facebook"  class="btn btn-primary" name="button">Start your own story</a>
-
-        </div>
+        <script src="/assets/js/start.js"></script>
+        <button onClick="recordStart()" type="button" href="/auth/facebook"  class="btn btn-primary" name="button">Start recording your story!!</button>
         <div class="scroll">
             <a href="#contact" class="scroll"><img src="/assets/img/down.png" class="img-responsive" alt="" /></a>
         </div>

@@ -2,7 +2,7 @@
 
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
-const User = require('../api/user/user.model');
+const Story = require('../api/story/story.model');
 
 module.exports = function passportConfig(app) {
   passport.use(new FacebookStrategy(
@@ -13,24 +13,32 @@ module.exports = function passportConfig(app) {
       profileFields: ['id', 'displayName', 'email']
     },
     function getAccessToken (accessToken, refreshToken, profile, cb) {
-      let user = {
-        facebookId: profile.id,
+      //console.log('profile',profile);
+      let story = {
+        userId: profile.id,
         displayName: profile.displayName
       };
-      User.findOneAndUpdate(user.facebookId, user, {upsert:true, new:true}, function(err, userFromDB){
-        return cb(err, userFromDB);
+      Story.findOneAndUpdate({userId: story.userId}, story, {upsert:true, new:true}, function(err, storyFromDB){
+        return cb(err, storyFromDB);
       });
     }
   ));
   
-  passport.serializeUser(function passportSerialize (user, done) {
-    done(null, user.facebookId);
+  passport.serializeUser(function passportSerialize (story, done) {
+    done(null, story._id);
   });
   
-  passport.deserializeUser(function passportDeserialize (id, done) {
-    done(null, id);
+  passport.deserializeUser(function(id, done) {
+    Story.findById(id, function (err, user) {
+      done(err, user);
+    });
   });
   
   app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(passport.session({
+    secret: 'my111Madafaking.*Niggas!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
 };
